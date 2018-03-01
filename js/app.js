@@ -6,7 +6,7 @@ let searchedForText;
 
 
 /* ++++++ agregamos el evento submit y las instrucciones a ejecutar +++++ */
-form.addEventListener('submit', function (e){
+form.addEventListener('submit', function (e) {
     e.preventDefault();
     responseContainer.innerHTML = '';
     searchedForText = searchField.value;
@@ -35,16 +35,53 @@ function addNews() {
     const data = JSON.parse(this.responseText);
     const response = data.response;
     const arryArticle = data.response.docs;
-   
-    arryArticle.map(function(article, index){
-        if (index < 5){
+    console.log(arryArticle);
+
+
+    arryArticle.map(function (article, index) {
+        if (index < 5) {
+            /* ingresando a la data de NY times*/
             const title = article.headline.main;
             const snippet = article.snippet;
-            let li = document.createElement('li');
-            li.className = 'articleClass';
-            li.innerText = snippet;
+            const sourceArticle = article.source;
+            console.log(sourceArticle);
             
-           responseContainer.appendChild(li);
+            const imgArt = article.multimedia[index].url;
+            const urlImag =('https://www.nytimes.com/' +imgArt);
+            console.log(urlImag);
+
+            const webUrlArt = article.web_url;
+            console.log(webUrlArt);
+            
+            
+             /* Creando los elementos */
+            let li = document.createElement('li');
+            let snippetArt = document.createElement('p');
+            let source = document.createElement('p');
+            let imag = document.createElement('img');
+            let webUrl = document.createElement('p');
+
+
+            /* Agregando clases a los elementos */
+            li.className = 'articleClass';
+            snippetArt.className = 'sniperClass'
+            imag.className = 'imgArticle';
+            source.className = 'sourceArt';
+            webUrl.className = 'webUrlClass';
+           
+           /* Asignar los valores */
+            li.innerText = title;
+            snippetArt.innerText = snippet;
+            source.innerText =  sourceArticle;
+            imag.setAttribute("src", urlImag);
+            webUrl.innerText = webUrlArt;
+
+            /* Asigar nodos a los elementos padres */
+            li.appendChild(snippetArt);
+            li.appendChild(imag);
+            li.appendChild(source);
+            li.appendChild(webUrl);
+            responseContainer.appendChild(li);
         }
     })
 }
@@ -63,6 +100,6 @@ function addNews() {
 //     let li = document.createElement('li');
 //     li.className = 'articleClass';
 //     li.innerText = snippet;
-    
+
 //    responseContainer.appendChild(li);
 // }
